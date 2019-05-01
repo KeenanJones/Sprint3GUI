@@ -3,6 +3,7 @@ package fx.planView;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
+import fx.addComment.addCommentController;
 import fx.checkSave.CheckSaveController;
 import fx.homePageView.HomePageViewController;
 import javafx.event.EventHandler;
@@ -15,6 +16,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -38,6 +40,9 @@ public class PlanViewController
 	@FXML 
 	private Button logoutButton;
 	
+	@FXML 
+	private Button commentBtn;
+	
 	@FXML
 	private Label nodeLabel;
 	
@@ -55,6 +60,9 @@ public class PlanViewController
 	
 	@FXML
 	Label dept;
+	
+	@FXML
+	AnchorPane comments;
 
 	/**
 	 * @return the user
@@ -363,6 +371,24 @@ public class PlanViewController
 		String contentValue = contents.getText();
 		currentNode.setData(contentValue);
 		
+	}
+	
+	public void comment() throws IOException
+	{
+		System.out.println("going to comment page");
+	
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/fx/addComment/addComment.fxml"));
+		BorderPane newMain = loader.load();
+		
+		addCommentController cont = loader.getController();
+		cont.setMainView(newMain);
+		cont.setTestClient(testClient);
+		cont.setPrimaryStage(primaryStage);
+		
+		primaryStage.setUserData(cont);
+		primaryStage.getScene().setRoot(newMain);
+			
 	}
 	
 	

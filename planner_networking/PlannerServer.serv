@@ -42,6 +42,24 @@
         </void>
        </object>
       </void>
+      <void method="put">
+       <string>2020</string>
+       <object class="software_masters.planner_networking.PlanFile">
+        <void property="canEdit">
+         <boolean>true</boolean>
+        </void>
+        <void property="plan">
+         <object class="software_masters.planner_networking.Centre">
+          <void property="name">
+           <string>Centre_Plan_1</string>
+          </void>
+         </object>
+        </void>
+        <void property="year">
+         <string>2020</string>
+        </void>
+       </object>
+      </void>
      </void>
     </void>
    </void>

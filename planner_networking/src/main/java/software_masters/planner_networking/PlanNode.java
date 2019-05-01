@@ -21,6 +21,8 @@ public class PlanNode implements Serializable
 	private String name;
 	private String data;
 	private ArrayList<PlanNode> children = new ArrayList<PlanNode>();
+	private ArrayList<Comment> comments = new ArrayList<Comment>();
+
 
 	// constructor is data is not known
 	/**
@@ -185,6 +187,29 @@ public class PlanNode implements Serializable
 		return this.name;
 		
 	}
+	
+	public ArrayList<Comment> getComments()
+	{
+	
+		return comments;
+	}
+
+	public void setComments(ArrayList<Comment> comments)
+	{
+	
+		this.comments = comments;
+	}
+	
+	public void addComment(Comment commentToAdd)
+	{
+		this.comments.add(commentToAdd);
+	}
+	
+	public void removeComment(Comment toRemove)
+	{
+		this.comments.remove(toRemove);
+	}
+
 
 	
 
