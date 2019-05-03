@@ -5,15 +5,29 @@ public class Comment
 	private Integer ID;
 	private String data;
 	private String author;
+	private PlanNode parentNode;
 	
-	public Comment(Integer ID, String data, String author)
+	public Comment(Integer ID, String data, String author, PlanNode parentNode)
 	{
 		this.ID = ID;
 		this.data = data;
 		this.author = author;
+		this.parentNode = parentNode;
 		
 	}
 	
+	public PlanNode getParentNode()
+	{
+	
+		return parentNode;
+	}
+
+	public void setParentNode(PlanNode parentNode)
+	{
+	
+		this.parentNode = parentNode;
+	}
+
 	public Integer getID()
 	{
 	

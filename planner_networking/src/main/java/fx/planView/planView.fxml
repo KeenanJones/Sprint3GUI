@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TreeView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -14,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane onMouseMoved="#buildTree" prefHeight="552.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.planView.PlanViewController">
+<BorderPane onMouseEntered="#buildTree" prefHeight="552.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.planView.PlanViewController">
    <top>
       <Pane prefHeight="84.0" prefWidth="738.0" BorderPane.alignment="CENTER">
          <children>
@@ -160,19 +159,13 @@
                         </HBox>
                         <HBox prefHeight="104.0" prefWidth="392.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Comments:">
+                              <ScrollPane id="scroll" fx:id="scroll" prefHeight="104.0" prefWidth="390.0">
                                  <HBox.margin>
-                                    <Insets right="10.0" />
+                                    <Insets left="10.0" right="10.0" />
                                  </HBox.margin>
-                              </Text>
-                              <ScrollPane prefHeight="100.0" prefWidth="302.0">
-                                <content>
-                                  <AnchorPane id="comments" fx:id="comments" minHeight="0.0" minWidth="0.0" prefHeight="226.0" prefWidth="300.0">
-                                       <padding>
-                                          <Insets left="100.0" />
-                                       </padding>
-                                    </AnchorPane>
-                                </content>
+                                 <content>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select a node to view comments." wrappingWidth="371.2110900878906" />
+                                 </content>
                               </ScrollPane>
                            </children>
                            <VBox.margin>

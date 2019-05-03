@@ -2,19 +2,29 @@ package fx.planView;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import fx.addComment.addCommentController;
 import fx.checkSave.CheckSaveController;
+import fx.editComment.EditCommentController;
 import fx.homePageView.HomePageViewController;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -23,10 +33,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import loginView.LoginViewController;
 import software_masters.planner_networking.Client;
+import software_masters.planner_networking.Comment;
 import software_masters.planner_networking.FXTreeView;
 import software_masters.planner_networking.Main;
 import software_masters.planner_networking.PlanFile;
 import software_masters.planner_networking.PlanNode;
+import software_masters.planner_networking.tableComment;
 
 public class PlanViewController
 {
@@ -39,6 +51,9 @@ public class PlanViewController
 	
 	@FXML 
 	private Button logoutButton;
+	
+	@FXML
+	private ScrollPane scroll;
 	
 	@FXML 
 	private Button commentBtn;
@@ -62,7 +77,7 @@ public class PlanViewController
 	Label dept;
 	
 	@FXML
-	AnchorPane comments;
+	private Text comments;
 
 	/**
 	 * @return the user
@@ -142,7 +157,7 @@ public class PlanViewController
 	
 	// lets never touch this again... it works
 	public void logout() throws IOException {
-		System.out.println("logout");
+		
 		
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/loginView/loginView.fxml"));
@@ -161,7 +176,7 @@ public class PlanViewController
 	}
 	
 	public void homepage() throws IOException {
-		System.out.println("homepage");
+		
 		
 		if(saveBtn.isDisabled())
 		{
@@ -242,14 +257,19 @@ public class PlanViewController
 	
 	private void handleTreeClick(TreeItem<PlanNode> newValue)
 	{
+		
 		try {
-
+			
+		this.scroll.setContent(new Text("There are no comments for this section."));
+			
 		removeBtn.setDisable(false);
 
 		addBtn.setDisable(false);
 
 		this.currentNode = newValue.getValue();
-	
+		
+		
+		loadComments(currentNode);
 		
 		nodeLabel.setText(currentNode.getName());
 		
@@ -264,6 +284,15 @@ public class PlanViewController
 	}
 	
 
+
+
+	private void removeComments()
+	{
+		comments.setText("");
+		
+		
+	}
+
 	public TreeItem<PlanNode> makeTree() throws RemoteException
 	{
 
@@ -276,7 +305,6 @@ public class PlanViewController
 
 	}
 
-	// This method creates an ArrayList of TreeItems (Products)
 	public TreeItem<PlanNode> getProducts(PlanNode root) throws RemoteException
 	{
 
@@ -293,7 +321,6 @@ public class PlanViewController
 		return currentTreeItem;
 	}
 	
-
 	private void getKids(PlanNode parentNode, TreeItem<PlanNode> parentTreeItem)
 	{
 
@@ -312,7 +339,6 @@ public class PlanViewController
 		}
 
 	}
-	
 	
 	public void removeNode() throws RemoteException
 	{
@@ -364,18 +390,21 @@ public class PlanViewController
 		contents.setText(stringContent);
 	}
 	
-	
 	public void changeContent() {
 		
+		if(this.currentNode != null) {
+			
 		saveBtn.setDisable(false);
 		String contentValue = contents.getText();
 		currentNode.setData(contentValue);
+		
+		}
 		
 	}
 	
 	public void comment() throws IOException
 	{
-		System.out.println("going to comment page");
+		
 	
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/fx/addComment/addComment.fxml"));
@@ -386,9 +415,110 @@ public class PlanViewController
 		cont.setTestClient(testClient);
 		cont.setPrimaryStage(primaryStage);
 		
+		
+		
+		
+		cont.setCurrNode(this.currentNode);
+	
+		
 		primaryStage.setUserData(cont);
 		primaryStage.getScene().setRoot(newMain);
 			
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void loadComments(PlanNode currentNode)
+	{
+		
+		Integer size = currentNode.getComments().size();
+		String finalComment = "";
+		ObservableList<Comment> data = FXCollections.observableArrayList();
+		
+		if(size != 0) 
+		{
+			
+			
+			for(int i = 0; i < size; i++) 
+			{
+				
+				
+				finalComment = "";
+				
+				String authorName = currentNode.getComments().get(i).getAuthor();
+				
+				String comment = currentNode.getComments().get(i).getData();
+				
+				String toComment = authorName + ": " + comment;
+				finalComment = finalComment + toComment;
+
+				data.add(new Comment(i, finalComment, comment, currentNode));
+				
+			
+		        
+			}
+			
+			@SuppressWarnings("rawtypes")
+			TableView table = new TableView();
+		
+	        
+	        TableColumn<String, Comment> col1 = new TableColumn<>("Comments:");
+	        col1.setCellValueFactory(new PropertyValueFactory<>("data"));
+	        col1.setMinWidth(353);
+	        
+	        table.getColumns().addAll(col1);
+	        table.getItems().addAll(data);
+	        
+	        table.getSelectionModel().selectedItemProperty()
+	        .addListener((observable, oldValue, newValue) -> {
+				try
+				{
+					handleTableClick((Comment) newValue);
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+
+	        
+	        data.clear();
+
+	        this.scroll.setContent(table);
+			
+			
+		}
+	}
+
+	private Object handleTableClick(Comment newValue) throws IOException
+	{	
+		editComment(newValue);
+		
+		return null;
+	}
+
+	private void editComment(Comment newValue) throws IOException
+	{
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/fx/editComment/editComment.fxml"));
+		BorderPane newMain = loader.load();
+		
+		EditCommentController cont = loader.getController();
+		cont.setMainView(newMain);
+		cont.setTestClient(testClient);
+		cont.setPrimaryStage(primaryStage);
+		cont.setThisComment(newValue);
+		
+		
+		
+		
+		cont.setCurrNode(this.currentNode);
+	
+		
+		primaryStage.setUserData(cont);
+		primaryStage.getScene().setRoot(newMain);
+		
+		
 	}
 	
 	

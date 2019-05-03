@@ -22,6 +22,7 @@ public class Client
 	private PlanNode currNode;
 	private Server server;
 	private ArrayList<PlanFile> deptPlans;
+	private String name;
 
 	/**
 	 * Sets the client's server.
@@ -44,6 +45,7 @@ public class Client
 	public void login(String username, String password) throws IllegalArgumentException, RemoteException
 	{
 		this.currPlanFile = null;
+		this.name = username;
 		this.currNode = null;
 		this.cookie = server.logIn(username, password);
 	}
@@ -267,5 +269,11 @@ public class Client
 		
 		return plans;
 		
+	}
+
+	public String getUsername()
+	{
+
+		return this.name;
 	}
 }
