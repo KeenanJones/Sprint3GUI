@@ -54,7 +54,7 @@ import software_masters.planner_networking.Server;
 import software_masters.planner_networking.ServerImplementation;
 
 
-public class CommentTest extends ApplicationTest
+public class CompareTest extends ApplicationTest
 {
 	static Server testServer;
 	static Client testClient;
@@ -128,9 +128,9 @@ public class CommentTest extends ApplicationTest
 		clickOn("#menu");
 		clickOn("2019");
 		clickOn("#submit");
-		clickOn("#viewPlanRBtn");
+		clickOn("#compareBtn");
 		clickOn("#planSubBtn");
-		clickOn("#tree");
+		
 		
 		
 	}
@@ -142,93 +142,13 @@ public class CommentTest extends ApplicationTest
 	}
 	
 	@Test
-	public void testCommentStuff() throws InterruptedException
+	public void testCompareStuff() throws InterruptedException
 	{
 		navigateToPage("user","user");
 		
-		doubleClickOn("Mission");
-		clickOn("#commentBtn");
-		clickOn("#commentField");
-		write("Add comment to Mission");
-		clickOn("#addComment");
-		
-		doubleClickOn("Mission");
-		clickOn("user: Add comment to Mission");
-		
-		assertEquals(getTextFieldText("#thisText"), "user: Add comment to Mission");
-		
-		clickOn("#exit");
-		
-		doubleClickOn("Mission");
-		doubleClickOn("Goal");
-		
-		clickOn("Mission");
-		clickOn("user: Add comment to Mission");
-		clickOn("#removeComment");
-		
-		clickOn("Mission");
-		clickOn("#commentBtn");
-		clickOn("#commentField");
-		write("Add comment 1 to Mission");
-		clickOn("#addComment");
-		
-		clickOn("Mission");
-		clickOn("#commentBtn");
-		clickOn("#commentField");
-		write("Add comment 2 to Mission");
-		clickOn("#addComment");
-		
-		clickOn("Mission");
-		clickOn("user: Add comment 2 to Mission");
-		clickOn("#exit");
-		
-		doubleClickOn("Mission");
-		doubleClickOn("Goal");
-		
-		clickOn("#commentBtn");
-		clickOn("#commentField");
-		write("Add comment 1 to Goal");
-		clickOn("#addComment");
-		
-		doubleClickOn("Mission");
-		doubleClickOn("Goal");
-		clickOn("user: Add comment 1 to Goal");
-		clickOn("#exit");
-		
-		doubleClickOn("Mission");
-		doubleClickOn("Goal");
-		clickOn("#saveBtn");
-		
-		clickOn("#logoutButton");
-		
-		navigateToPage("admin","admin");
-		doubleClickOn("Mission");
-		doubleClickOn("Goal");
-		
-		clickOn("Mission");
-		clickOn("user: Add comment 2 to Mission");
-		clickOn("#removeComment");
-		
-		doubleClickOn("Mission");
-		clickOn("#commentBtn");
-		clickOn("#commentField");
-		write("Add comment 3 to Mission");
-		clickOn("#addComment");
-		
-		doubleClickOn("Mission");
-		doubleClickOn("Goal");
-		clickOn("#saveBtn");
-		
-		clickOn("#logoutButton");
-		
-		navigateToPage("user","user");
-		doubleClickOn("Mission");
-		clickOn("admin: Add comment 3 to Mission");
-		
-		
-		
-		
-		
+		clickOn("#SelectPlan");
+		clickOn("2017");
+		clickOn("#compareButton");
 
 	}
 	

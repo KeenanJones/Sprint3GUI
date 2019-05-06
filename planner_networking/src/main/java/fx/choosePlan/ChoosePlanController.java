@@ -8,6 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+import compareView.compareViewController;
 import fx.planView.PlanViewController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -58,6 +59,9 @@ public class ChoosePlanController
 	
 	@FXML
 	private RadioButton viewPlanRBtn;
+	
+	@FXML 
+	private RadioButton compareBtn;
 	
 	@FXML
 	private RadioButton newPlanRBtn;
@@ -131,7 +135,7 @@ public class ChoosePlanController
 			
 			
 		}
-		else // newPlanButton selected
+		else if(newPlanRBtn.isSelected())
 		{
 			String planYear = newPlanYearText.getText();
 			System.out.println(planYear);
@@ -160,10 +164,25 @@ public class ChoosePlanController
 			
 
 			
+		}
+		else if(compareBtn.isSelected())
+		{
+			
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("/compareView/compareView.fxml"));
+			BorderPane newMain = loader.load();
+			
+			compareViewController cont = loader.getController();
+			cont.setTestClient(testClient);
+			cont.setPrimaryStage(primaryStage);
+
+			cont.setSelectedPlan(testClient.getCurrPlanFile());
+			
+			primaryStage.getScene().setRoot(newMain);
 			
 			
 		}
-		
 		
 		
 		

@@ -1,7 +1,13 @@
 package software_masters.planner_networking;
 
-public class Comment
+import java.io.Serializable;
+
+public class Comment implements Serializable 
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4635517100749284720L;
 	private Integer ID;
 	private String data;
 	private String author;

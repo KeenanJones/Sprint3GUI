@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.181" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.choosePlan.ChoosePlanController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.choosePlan.ChoosePlanController">
    <center>
       <Pane prefHeight="306.0" prefWidth="454.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,6 +24,7 @@
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="132.00000610351563" minHeight="10.0" prefHeight="92.20000610351562" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="132.00000610351563" minHeight="10.0" prefHeight="92.20000610351562" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="88.20000000000002" minHeight="10.0" prefHeight="86.59999389648439" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="61.999975585937506" minHeight="10.0" prefHeight="61.999975585937506" vgrow="SOMETIMES" />
               </rowConstraints>
@@ -33,12 +34,12 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label id="newPlanLabel" fx:id="newPlanLabel" prefHeight="56.0" prefWidth="188.0" text="Make new plan with selected plan as the template" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="1">
+                  <Label id="newPlanLabel" fx:id="newPlanLabel" prefHeight="56.0" prefWidth="188.0" text="Make new plan with selected plan as the template" wrapText="true" GridPane.rowIndex="2">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                      <children>
                         <Label id="planYearLabel" fx:id="planYearLabel" prefHeight="18.0" prefWidth="110.0" text="New plan year: ">
                            <font>
@@ -53,7 +54,9 @@
                      </children>
                   </HBox>
                   <RadioButton id="viewPlanRBtn" fx:id="viewPlanRBtn" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="18.0" prefWidth="38.0" GridPane.columnIndex="1" />
-                  <RadioButton id="newPlanRBtn" fx:id="newPlanRBtn" mnemonicParsing="false" prefHeight="18.0" prefWidth="46.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <RadioButton id="newPlanRBtn" fx:id="newPlanRBtn" mnemonicParsing="false" prefHeight="18.0" prefWidth="46.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label id="compareLabel" fx:id="compareLabel" text="Compare to another plan" GridPane.rowIndex="1" />
+                  <RadioButton id="compareBtn" fx:id="compareBtn" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <Button fx:id="planSubBtn" layoutX="188.0" layoutY="231.0" mnemonicParsing="false" onAction="#choosePlanType" prefHeight="36.0" prefWidth="78.0" text="Submit" />
