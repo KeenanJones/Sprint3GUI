@@ -245,6 +245,7 @@ public class compareViewController
 				compareTrees(firstPlan1.getChildren().get(i), secondPlan2.getChildren().get(i));
 			}	 
 		}
+		
 	}
 		
 }
