@@ -57,7 +57,8 @@ public class ServerImplementation implements Server
 		Plan plan = new Centre();
 		plan.setName("Centre_Plan_1");
 		PlanFile planfile = new PlanFile("2019", true, plan);
-		planfile.getPlan().getRoot().getChildren().get(0).setData("help");
+		planfile.getPlan().getRoot().getChildren().get(0).setData("help please");
+		
 		dpt.addPlan("2019", planfile);
 
 		Plan defaultCentre = new Centre();

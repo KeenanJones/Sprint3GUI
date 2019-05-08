@@ -54,7 +54,7 @@ import software_masters.planner_networking.Server;
 import software_masters.planner_networking.ServerImplementation;
 
 
-public class CompareTest extends ApplicationTest
+public class HistoryTest extends ApplicationTest
 {
 	static Server testServer;
 	static Client testClient;
@@ -67,7 +67,6 @@ public class CompareTest extends ApplicationTest
 	@Override
 	public void start(Stage primaryStage) throws IOException, NotBoundException
 	{
-		
 		this.primaryStage = primaryStage;
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/serverView/serverView.fxml"));
@@ -131,8 +130,7 @@ public class CompareTest extends ApplicationTest
 		clickOn("#submit");
 		clickOn("#viewPlanRBtn");
 		clickOn("#planSubBtn");
-		
-		
+		clickOn("#tree");
 		
 		
 	}
@@ -144,57 +142,25 @@ public class CompareTest extends ApplicationTest
 	}
 	
 	@Test
-	public void testCompareStuff() throws InterruptedException
+	public void testHistory() throws InterruptedException
 	{
 		navigateToPage("user","user");
 		
 		doubleClickOn("Mission");
-		clickOn("#contents");
-		write("This mission will be different than 2017's");
-		
 		doubleClickOn("Goal");
-		clickOn("#contents");
-		write(" This goal will be different than 2017's.");
+		clickOn("#addBtn");
+		clickOn("Mission");
+		clickOn("Goal");
+		clickOn("#addBtn");
 		
-		doubleClickOn("Learning Objective");
-		clickOn("#contents");
-		write(" This objective will be the same as 2017's");
+		clickOn("#HistoryBtn");
+		clickOn("#textSpot");
 		
-		clickOn("#saveBtn");
-		clickOn("#homepageButton");
 		
-		clickOn("#menu");
-		clickOn("2017");
-		clickOn("#submit");
-		clickOn("#viewPlanRBtn");
-		clickOn("#planSubBtn");
+
 		
-		doubleClickOn("Mission");
-		clickOn("#contents");
-		write("Different");
 		
-		doubleClickOn("Goal");
-		clickOn("#contents");
-		write(" Different.");
 		
-		doubleClickOn("Learning Objective");
-		clickOn("#contents");
-		write(" This objective will be the same as 2017's");
-		
-		clickOn("#saveBtn");
-		clickOn("#homepageButton");
-		
-		clickOn("#menu");
-		clickOn("2019");
-		clickOn("#submit");
-		clickOn("#compareBtn");
-		clickOn("#planSubBtn");
-		
-		clickOn("#SelectPlan");
-		clickOn("2017");
-		clickOn("#compareButton");
-		
-		Thread.sleep(10000);
 		
 		
 

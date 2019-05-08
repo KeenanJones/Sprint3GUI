@@ -108,6 +108,11 @@
                   <Font size="11.0" />
                </font>
             </Button>
+            <Button id="HistoryBtn" fx:id="HistoryBtn" mnemonicParsing="false" onAction="#getHistory" text="History">
+               <VBox.margin>
+                  <Insets left="27.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
    </right>

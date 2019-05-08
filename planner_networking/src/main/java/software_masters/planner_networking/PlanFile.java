@@ -14,6 +14,19 @@ public class PlanFile implements Serializable // extends UnicastRemoteObject
 	private String year;
 	private boolean canEdit;
 	private Plan plan;
+	private Log myLog;
+	
+	public Log getMyLog()
+	{
+	
+		return myLog;
+	}
+
+	public void setMyLog(Log myLog)
+	{
+	
+		this.myLog = myLog;
+	}
 
 	/**
 	 * @param year

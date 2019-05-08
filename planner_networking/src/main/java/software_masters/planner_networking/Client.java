@@ -23,6 +23,8 @@ public class Client
 	private Server server;
 	private ArrayList<PlanFile> deptPlans;
 	private String name;
+	private ArrayList<Observer> myObservers;
+	private Change myChange;
 
 	/**
 	 * Sets the client's server.
@@ -145,6 +147,10 @@ public class Client
 	public void addBranch() throws IllegalArgumentException, RemoteException
 	{
 		this.currPlanFile.getPlan().addNode(this.currNode.getParent());
+		Change thisChange = new Change(this.name, this.currNode, "Added a branch to " + this.currNode.getName() + " .");
+		this.myChange = thisChange;
+		notifyObserverUpdae();
+		
 	}
 
 	/**
@@ -157,6 +163,10 @@ public class Client
 		PlanNode temp = this.currNode.getParent();
 		this.currPlanFile.getPlan().removeNode(this.currNode);
 		this.currNode = temp.getChildren().get(0);
+		
+		Change thisChange = new Change(this.name, this.currNode, "Removed a branch from " + this.currNode.getName() + " .");
+		this.myChange = thisChange;
+		notifyObserverUpdae();
 	}
 
 	/**
@@ -167,6 +177,10 @@ public class Client
 	public void editData(String data)
 	{
 		this.currNode.setData(data);
+		
+		Change thisChange = new Change(this.name, this.currNode, "Edited the data of " + this.currNode.getName() + " .");
+		this.myChange = thisChange;
+		notifyObserverUpdae();
 	}
 
 	/**
@@ -275,5 +289,37 @@ public class Client
 	{
 
 		return this.name;
+	}
+	
+	public void registerObserver(Observer newObserver)
+	{
+		this.myObservers.add(newObserver);
+		
+	}
+	
+	public void unregisterObserver(Observer oldObserver)
+	{
+		this.myObservers.remove(oldObserver);
+	}
+	
+	public void notifyObserverUpdae()
+	{
+		for(Observer thisObserver : this.myObservers)
+		{
+			thisObserver.update();
+		}
+		
+	}
+
+	public Change getMyChange()
+	{
+	
+		return myChange;
+	}
+
+	public void setMyChange(Change myChange)
+	{
+	
+		this.myChange = myChange;
 	}
 }

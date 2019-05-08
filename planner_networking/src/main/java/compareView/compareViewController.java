@@ -19,7 +19,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import software_masters.planner_networking.Change;
 import software_masters.planner_networking.Client;
+import software_masters.planner_networking.Log;
 import software_masters.planner_networking.PlanFile;
 import software_masters.planner_networking.PlanNode;
 import software_masters.planner_networking.TreeArrayItem;
@@ -44,13 +46,18 @@ public class compareViewController
 	
 	
 	
-	
+	private TreeArrayItem secondCurrNode;
 	PlanFile selectedPlan;
 	Stage primaryStage;
 	BorderPane mainView;
 	Client testClient;
 	PlanNode currentNode;	
 	int count = 0;
+	private String myDifferences;
+
+	private String plan1Year;
+
+	private String plan2Year;
 	
 	public Stage getPrimaryStage()
 	{
@@ -165,58 +172,85 @@ public class compareViewController
 		
 	}
 	
-	private void comparePlans(PlanFile firstPlan1, PlanFile secondPlan2)
+	private void comparePlans(PlanFile firstPlan1, PlanFile secondPlan2) throws RemoteException
 	{
+		this.myDifferences = "";
+		this.plan1Year = firstPlan1.getYear();
+		this.plan2Year = secondPlan2.getYear();
+		compareTrees(firstPlan1.getPlan().getRoot(), secondPlan2.getPlan().getRoot());
 		
-		makeTree(firstPlan1);
-		textSpot.setText("Going to compare " + firstPlan1.getYear() + " and " + secondPlan2.getYear());
+		
+		textSpot.setText(this.myDifferences);
 		
 	}
 	
-	public ArrayList<PlanNode> makeTree(PlanFile firstPlan1) throws RemoteException
+	private void compareTrees(PlanNode firstPlan1, PlanNode secondPlan2)
 	{
-
-		ArrayList<TreeArrayItem> finalArray = getProducts(firstPlan1.getPlan().getRoot());
+		String string1 = firstPlan1.getData();
+		String string2 = secondPlan2.getData();
 		
-		return finalArray;
+		int lengthOfChildren1 = firstPlan1.getChildren().size();
+		int lengthOfChildren2 = secondPlan2.getChildren().size();
 
-	}
-
-	// This method creates an ArrayList of TreeItems (Products)
-	public ArrayList<TreeArrayItem> getProducts(PlanNode root) throws RemoteException
-	{
-		//Makes a new array and adds the root
-		ArrayList<TreeArrayItem> thisLevel = new ArrayList<TreeArrayItem>();
-		
-		TreeArrayItem rootItem = new TreeArrayItem(root, new ArrayList<TreeArrayItem>());
-		thisLevel.add(rootItem);
-		
-		getKids(root);
-
-		return thisLevel;
-	}
-	
-
-	private void getKids(PlanNode parentNode)
-	{
-
-		if (parentNode.getChildren().isEmpty())
+		//See if they are both null to get rid of null error
+		if(string1 == null && string2 == null)
 		{
 			return;
 		}
-
-		for (int i = 0; i < parentNode.getChildren().size(); i++)
+		
+		//See if they are different
+		else if((string1 == null && string2 != null) || (string1 != null && string2 == null) || (!string1.equals(string2)))
 		{
-			TreeItem<PlanNode> newChild = new TreeItem<PlanNode>(parentNode.getChildren().get(i));
-
-			parentTreeItem.getChildren().add(newChild);
-			getKids(parentNode.getChildren().get(i), newChild);
+			//If different, we want to note the difference
+			String update = firstPlan1.getName() + " " + this.plan1Year + " and " + secondPlan2.getName() + " " + this.plan2Year + " " + "have different data.";
+			this.myDifferences = this.myDifferences + update + "\n";
+			
+		}
+		
+		//See if they have uneven children
+		if (lengthOfChildren1 < lengthOfChildren2)
+		{
+			for (int i = 0; i < lengthOfChildren1; i++)
+			{
+				 compareTrees(firstPlan1.getChildren().get(i), secondPlan2.getChildren().get(i));
+			} 
+			
+			for (int i = lengthOfChildren1 - 1; i < lengthOfChildren2; i++)
+			{
+				String update = "Plan " + this.plan2Year + " has a " + secondPlan2.getName() + " section that " + this.plan1Year + " doesn't.";
+				this.myDifferences = this.myDifferences + update + "\n";
+			}
+		}
+		
+		else if(lengthOfChildren1 > lengthOfChildren2)
+		{			
+			for (int i = 0; i<lengthOfChildren2; i++)
+			{
+				 compareTrees(firstPlan1.getChildren().get(i), secondPlan2.getChildren().get(i));
+			}
+			
+			for (int i = lengthOfChildren2-1; i < lengthOfChildren1; i++)
+			{
+				String update = "Plan " + this.plan1Year + " has a " + firstPlan1.getName() + " section that " + this.plan2Year + " doesn't.";
+				this.myDifferences = this.myDifferences + update + "\n";
+			}
 
 		}
-
+		
+		//Else the lengths of children are the same
+		else
+		{
+			for (int i = 0; i<lengthOfChildren1; i++)
+			{
+				compareTrees(firstPlan1.getChildren().get(i), secondPlan2.getChildren().get(i));
+			}	 
+		}
 	}
-
-	
-
-	
+		
 }
+	
+
+	
+
+	
+

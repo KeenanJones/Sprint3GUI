@@ -9,6 +9,7 @@ import fx.addComment.addCommentController;
 import fx.checkSave.CheckSaveController;
 import fx.editComment.EditCommentController;
 import fx.homePageView.HomePageViewController;
+import historyView.HistoryViewController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,9 +33,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import loginView.LoginViewController;
+import software_masters.planner_networking.Change;
 import software_masters.planner_networking.Client;
 import software_masters.planner_networking.Comment;
 import software_masters.planner_networking.FXTreeView;
+import software_masters.planner_networking.Log;
 import software_masters.planner_networking.Main;
 import software_masters.planner_networking.PlanFile;
 import software_masters.planner_networking.PlanNode;
@@ -51,6 +54,9 @@ public class PlanViewController
 	
 	@FXML 
 	private Button logoutButton;
+	
+	@FXML
+	private Button HistoryBtn;
 	
 	@FXML
 	private ScrollPane scroll;
@@ -343,6 +349,14 @@ public class PlanViewController
 	public void removeNode() throws RemoteException
 	{
 		
+		Change thisChange = new Change(testClient.getUsername(), currentNode, "Removed a node");
+		ArrayList<Change> newList = new ArrayList<Change>();
+		testClient.getCurrPlanFile().setMyLog(new Log(newList));
+		Log thisLog = testClient.getCurrPlanFile().getMyLog();
+		thisLog.addChange(thisChange);
+		testClient.getCurrPlanFile().setMyLog(thisLog);
+		
+		
 		
 		this.testClient.setCurrNode(currentNode);
 		
@@ -361,8 +375,17 @@ public class PlanViewController
 	
 	public void addNode() throws RemoteException
 	{
+		
+		
 		this.testClient.setCurrNode(currentNode);
 		this.testClient.addBranch();
+		
+		Change thisChange = new Change(testClient.getUsername(), currentNode, "Added a node");
+		ArrayList<Change> newList = new ArrayList<Change>();
+		testClient.getCurrPlanFile().setMyLog(new Log(newList));
+		Log thisLog = testClient.getCurrPlanFile().getMyLog();
+		thisLog.addChange(thisChange);
+		testClient.getCurrPlanFile().setMyLog(thisLog);
 		
 		
 		builtTree = false;
@@ -518,6 +541,28 @@ public class PlanViewController
 		primaryStage.setUserData(cont);
 		primaryStage.getScene().setRoot(newMain);
 		
+		
+	}
+	
+	public void getHistory() throws IOException
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/historyView/historyView.fxml"));
+		BorderPane newMain = loader.load();
+		
+		HistoryViewController cont = loader.getController();
+		cont.setMainView(newMain);
+		cont.setTestClient(testClient);
+		cont.setPrimaryStage(primaryStage);
+		
+		
+		
+		
+		cont.setCurrNode(this.currentNode);
+	
+		
+		primaryStage.setUserData(cont);
+		primaryStage.getScene().setRoot(newMain);
 		
 	}
 	
